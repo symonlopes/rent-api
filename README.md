@@ -1,8 +1,11 @@
-# rentthings-api
-
 # About project
 
-A renting things project to explore some Java 21 features with SpringBoot.
+This is a rent items project. Made for brazilian market.
+As a business, you can rent things to customers.
+
+The process is simple: you offer things to locate, customers rent multiple items, you deliver and pickup these items.
 
 
-# About stack
+# Tech
+
+Is a monolith architecture.
