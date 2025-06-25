@@ -1,12 +1,16 @@
 package br.com.symon.rentapi.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
+import java.util.UUID;
+
+@Builder
 @Data
 public class Item {
-    private String description;
+    private UUID id;
+    private String name;
+    private String details;
 }
