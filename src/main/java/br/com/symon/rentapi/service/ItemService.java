@@ -14,12 +14,10 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     public Item create(Item item) {
-        //Validate item
+        //TODO: Validate item
 
         //better place to generate ID
-        item.setId(java.util.UUID.randomUUID());
-
-        //persist item
+        //item.setId(java.util.UUID.randomUUID());
 
         return itemRepository.save(item);
     }

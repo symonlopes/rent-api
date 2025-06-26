@@ -1,14 +1,12 @@
 package br.com.symon.rentapi.repository;
 
 import br.com.symon.rentapi.model.Item;
-import org.springframework.stereotype.Service;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-@Service
-public class ItemRepository {
+import java.util.UUID;
 
-    public Item save(Item item){
-
-        return item;
-    }
+@Repository
+public interface ItemRepository  extends CrudRepository<Item, UUID> {
 
 }

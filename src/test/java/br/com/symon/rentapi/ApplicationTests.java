@@ -1,20 +1,22 @@
 package br.com.symon.rentapi;
 
-import br.com.symon.rentapi.controller.ItemController;
 import br.com.symon.rentapi.model.Item;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.*;
 
-@WebMvcTest(ItemController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class ApplicationTests {
 
 	@Autowired
@@ -23,23 +25,46 @@ public class ApplicationTests {
 	private ObjectMapper objectMapper;
 
 	@Test
-	public void shouldCreateItemSuccessfully() throws Exception {
-		// Arrange (Organização)
-		// 1. Criamos os objetos que vamos usar no teste.
+	public void shouldNotCreateItemWithoutName() throws Exception {
+
 		Item itemToCreate = Item.builder()
-				.name("Gamer Chair")
-				.details("More details about chair").build();
+				.details("Item Details").build();
 
-		Item savedItem = Item.builder()
-				.name("Gamer Chair")
-				.details("More details about chair").build();
+		MvcResult result = mockMvc.perform(post("/api/items")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(itemToCreate)))
+				.andExpect(status().isBadRequest())
+				.andReturn();
 
-		mockMvc.perform(post("/api/items")
+		String responseBody = result.getResponse().getContentAsString();
+		Item returnedItem = objectMapper.readValue(responseBody, Item.class);
+
+		assertNotNull(returnedItem.getId(), "Id must not be null");
+		assertEquals(itemToCreate.getName(), returnedItem.getName(), "Names must match");
+		assertEquals(itemToCreate.getDetails(), returnedItem.getDetails(), "Details must match");
+
+	}
+
+	@Test
+	public void shouldCreateItemSuccessfully() throws Exception {
+
+		Item itemToCreate = Item.builder()
+				.name("Item Name")
+				.details("Item Details").build();
+
+		MvcResult result = mockMvc.perform(post("/api/items")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(itemToCreate)))
 				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.id").isNotEmpty())
-				.andExpect(jsonPath("$.name").value("Gamer Chair"));
+				.andReturn();
+
+		String responseBody = result.getResponse().getContentAsString();
+		Item returnedItem = objectMapper.readValue(responseBody, Item.class);
+
+		assertNotNull(returnedItem.getId(), "Id must not be null");
+		assertEquals(itemToCreate.getName(), returnedItem.getName(), "Names must match");
+		assertEquals(itemToCreate.getDetails(), returnedItem.getDetails(), "Details must match");
+
 	}
 
 }
