@@ -10,7 +10,7 @@ The process is simple: you offer things to locate, customers rent multiple items
 
 Is a monolith architecture.
 
-The project is built using Gradle, Java 21, Spring Boot 3.5.x, and H2 database 2.3.x, Flyway 11.x.
+The project is built using Gradle, Java 21, Spring Boot 3.5.x, Spring JDBC, H2 database 2.3.x, Flyway 11.x, Lombok, Junit.
 
 # TODO
 

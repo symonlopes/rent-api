@@ -25,23 +25,30 @@ public class ApplicationTests {
 	private ObjectMapper objectMapper;
 
 	@Test
+	public void shouldCreateItemWithoutDetails() throws Exception {
+
+		Item itemToCreate = Item.builder()
+				.name("Item Name").build();
+
+		mockMvc.perform(post("/api/items")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(itemToCreate)))
+				.andExpect(status().isBadRequest())
+				.andReturn();
+	}
+
+	@Test
 	public void shouldNotCreateItemWithoutName() throws Exception {
 
 		Item itemToCreate = Item.builder()
 				.details("Item Details").build();
 
-		MvcResult result = mockMvc.perform(post("/api/items")
+		mockMvc.perform(post("/api/items")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(itemToCreate)))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 
-		String responseBody = result.getResponse().getContentAsString();
-		Item returnedItem = objectMapper.readValue(responseBody, Item.class);
-
-		assertNotNull(returnedItem.getId(), "Id must not be null");
-		assertEquals(itemToCreate.getName(), returnedItem.getName(), "Names must match");
-		assertEquals(itemToCreate.getDetails(), returnedItem.getDetails(), "Details must match");
 
 	}
 

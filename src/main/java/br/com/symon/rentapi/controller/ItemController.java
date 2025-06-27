@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/items")
 @AllArgsConstructor
 @Log4j2
-//@Validated
+@Validated
 public class ItemController {
 
     private final ItemService itemService;

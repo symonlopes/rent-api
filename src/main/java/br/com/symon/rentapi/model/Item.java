@@ -20,5 +20,8 @@ public class Item {
     @NotBlank(message = "O nome não pode ser vazio")
     @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
     private String name;
+
+    @NotBlank(message = "TEMP details Não Pode ser vazio")
+    @Size(min = 2, max = 100, message = "O details deve ter entre 2 e 100 caracteres")
     private String details;
 }

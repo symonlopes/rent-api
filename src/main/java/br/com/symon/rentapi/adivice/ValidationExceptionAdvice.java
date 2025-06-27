@@ -1,0 +1,35 @@
+package br.com.symon.rentapi.adivice;
+
+import br.com.symon.rentapi.ApiError;
+import br.com.symon.rentapi.ErrorResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+/**
+ * Converts validation exceptions into a structured error response, frontend friendly.
+ */
+@ControllerAdvice
+public class ValidationExceptionAdvice {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        var response = ErrorResponse.builder().build();
+
+        for (ObjectError error : ex.getBindingResult().getAllErrors()) {
+            response.getErrors().add(
+                    ApiError.builder()
+                            .field(((FieldError) error).getField())
+                            .message(error.getDefaultMessage())
+                            .build());
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+}
