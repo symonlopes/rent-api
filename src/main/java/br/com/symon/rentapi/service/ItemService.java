@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @AllArgsConstructor
 @Service
 @Log4j2
@@ -14,11 +17,11 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     public Item create(Item item) {
-        //TODO: Validate item
-
-        //better place to generate ID
-        //item.setId(java.util.UUID.randomUUID());
-
         return itemRepository.save(item);
     }
+
+    public Optional<Item> findById(UUID id) {
+        return itemRepository.findById(id);
+    }
+
 }
