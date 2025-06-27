@@ -43,11 +43,18 @@ public class ApplicationTests {
 		Item itemToCreate = Item.builder()
 				.details("Item Details").build();
 
-		mockMvc.perform(post("/api/items")
+		MvcResult result = mockMvc.perform(post("/api/items")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(itemToCreate)))
 				.andExpect(status().isBadRequest())
 				.andReturn();
+
+		String responseBody = result.getResponse().getContentAsString();
+
+		ErrorResponse errorResponse = objectMapper.readValue(responseBody, ErrorResponse.class);
+
+		assertTrue(errorResponse.getErrors().stream().anyMatch(error -> "name".equals(error.field())),
+				"Expected at least one error for field 'name'");
 
 
 	}
