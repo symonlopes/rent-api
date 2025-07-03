@@ -1,9 +1,11 @@
 package br.com.symon.rentapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MvcResult;
+@Getter
 @Component
 public class TestUtils {
 
@@ -15,10 +17,11 @@ public class TestUtils {
     }
 
     public boolean hasErrorOnField(String field, ErrorResponse errorResponse) {
-        return errorResponse.getErrors().stream().anyMatch(error -> field.equals(error.field()));
+        return errorResponse.getErrors().stream().anyMatch(
+                error ->
+                        field.equals(error.field()
+                        )
+        );
     }
 
-    public ObjectMapper getObjectMapper() {
-        return objectMapper;
-    }
 }

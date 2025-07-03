@@ -34,4 +34,17 @@ public class ItemController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Item> delete(@PathVariable UUID id){
+        log.debug("Deleting item with id [{}]", id);
+        itemService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Item> update(@RequestBody @Valid Item item) {
+        var updatedItem = itemService.update(item);
+        return new ResponseEntity<>(updatedItem, HttpStatus.OK);
+    }
+
 }

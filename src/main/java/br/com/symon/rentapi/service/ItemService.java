@@ -1,5 +1,6 @@
 package br.com.symon.rentapi.service;
 
+import br.com.symon.rentapi.ResourceNotFoundException;
 import br.com.symon.rentapi.model.Item;
 import br.com.symon.rentapi.repository.ItemRepository;
 import lombok.AllArgsConstructor;
@@ -24,4 +25,15 @@ public class ItemService {
         return itemRepository.findById(id);
     }
 
+    public void deleteById(UUID id) {
+        if (!itemRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Item not found with id: " + id);
+        }
+        itemRepository.deleteById(id);
+    }
+
+    public Item update(Item itemToUpdate) {
+        log.debug("Attempting to update item with id: {}", itemToUpdate);
+        return itemRepository.save(itemToUpdate);
+    }
 }
