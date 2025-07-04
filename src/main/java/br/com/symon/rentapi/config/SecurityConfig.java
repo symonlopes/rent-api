@@ -45,17 +45,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    public JwtDecoder jwtDecoder() {
-//        return new JwtDecoder().("your-issuer-uri");
-//    }
-
-//    @Bean
-//    public JwtDecoder jwtDecoder() {
-//        SecretKeySpec secretKey = new SecretKeySpec(this.jwtSecret.getBytes(), "HmacSHA512");
-//        return NimbusJwtDecoder.withSecretKey(secretKey).build();
-//    }
-
     @Bean
     public JwtDecoder jwtDecoder() {
         var key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
