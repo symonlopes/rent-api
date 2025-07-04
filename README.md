@@ -59,9 +59,10 @@ The project is built using Gradle,
 ## Questions
 ### How can you enable DEBUG log level without have to restart application?
 ### How to remove sensible information from log like this:
- 2025-07-03T19:01:02.490-03:00  INFO 45289 --- [rentapi] [nio-8080-exec-1] b.c.s.rentapi.controller.UserController  : Registering a new user [UserRegistrationRequest(email=jhon@email.com, name=jhon doe, password=senha@valida112, passwordConfirmation=senha@valida112)]
+ 2025-07-03T19:01:02.490-03:00  INFO 45289 ---  b.c.s.rentapi.controller.UserController  : Registering a new user [UserRegistrationRequest(email=jhon@email.com, name=jhon doe, password=senha@valida112, passwordConfirmation=senha@valida112)]
 
 # Changelog
+* Use spring-security-oauth2-authorization-server to generate JWT tokens
 * Move to constants solution:  user.getRoles().add(Role.builder().description("CUSTOMER").build());
 * Validate if passwords are equals on account creation.
 * Security configuration
