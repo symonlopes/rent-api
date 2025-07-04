@@ -1,0 +1,6 @@
+CREATE TABLE "user" (
+     "id" UUID DEFAULT RANDOM_UUID() PRIMARY KEY,
+     "name" VARCHAR(100) NOT NULL,
+     "email" VARCHAR(200) NOT NULL UNIQUE,
+     "password_hash" VARCHAR(120) NOT NULL
+);
