@@ -1,4 +1,4 @@
-package br.com.symon.rentapi.adivice;
+package br.com.symon.rentapi.advice;
 
 import br.com.symon.rentapi.ApiError;
 import br.com.symon.rentapi.ErrorResponse;

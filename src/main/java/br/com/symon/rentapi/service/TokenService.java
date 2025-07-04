@@ -9,6 +9,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -20,31 +28,71 @@ public class TokenService {
 
     @Value("${jwt.expiration}")
     private long jwtExpiration;
+//
+//    public String generateToken(Authentication authentication) {
+//        String username = authentication.getName();
+//        Date now = new Date();
+//        Date expiryDate =  new Date(now.getTime() + jwtExpiration);
+//
+//        var key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+//
+//        var roles = authentication.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.toList());
+//
+//        return Jwts.builder()
+//                .claim("roles", roles)
+//                .subject(username)
+//                .issuedAt(now)
+//                .expiration(expiryDate)
+//                .signWith(key, Jwts.SIG.HS512)
+//                .compact();
+//    }
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(Authentication authentication) throws Exception {
         String username = authentication.getName();
         Date now = new Date();
-        Date expiryDate =  new Date(now.getTime() + jwtExpiration);
+        Date expiryDate = new Date(now.getTime() + jwtExpiration);
 
-        var key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        PrivateKey privateKey = loadPrivateKey();
 
-        var roles = authentication.getAuthorities().stream()
+        var scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         return Jwts.builder()
-                .claim("roles", roles)
+                .claim("scope", scope)
                 .subject(username)
                 .issuedAt(now)
                 .expiration(expiryDate)
-                .signWith(key, Jwts.SIG.HS512)
+                .signWith(privateKey, Jwts.SIG.RS256)
                 .compact();
     }
 
-    public Claims validateToken(String token) {
-        var key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+    public PrivateKey loadPrivateKey() throws Exception {
+        String key = Files.readString(Paths.get("src/main/resources/certs/private.pem"));
+        key = key.replaceAll("-----\\w+ PRIVATE KEY-----", "").replaceAll("\\s", "");
+        byte[] keyBytes = Base64.getDecoder().decode(key);
+
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        return kf.generatePrivate(spec);
+    }
+
+    public PublicKey loadPublicKey() throws Exception {
+        String key = Files.readString(Paths.get("src/main/resources/certs/public.pem"));
+        key = key.replaceAll("-----\\w+ PUBLIC KEY-----", "").replaceAll("\\s", "");
+        byte[] keyBytes = Base64.getDecoder().decode(key);
+
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        return kf.generatePublic(spec);
+    }
+
+    public Claims validateToken(String token) throws Exception {
+        PublicKey publicKey = loadPublicKey();
         var payload = Jwts.parser()
-                .verifyWith(key)
+                .verifyWith(publicKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

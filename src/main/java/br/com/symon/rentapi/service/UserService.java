@@ -39,7 +39,7 @@ public class UserService  implements UserDetailsService {
                     @Override
                     public Collection<? extends GrantedAuthority> getAuthorities() {
                         return user.getRoles().stream()
-                                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getDescription()))
+                                .map(role -> new SimpleGrantedAuthority(role.getDescription()))
                                 .collect(Collectors.toList());
                     }
 

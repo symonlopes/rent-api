@@ -22,7 +22,7 @@ public class AuthenticationController {
     private final TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<LoginResponse> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> authenticateUser(@RequestBody LoginRequest loginRequest) throws Exception {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.email(),

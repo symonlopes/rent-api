@@ -28,7 +28,7 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @PreAuthorize("hasAuthority('SCOPE_CUSTOMER')")
     public ResponseEntity<Item> getById(@PathVariable UUID id) {
         log.debug("Fetching item with id [{}]", id);
         return itemService.findById(id)
