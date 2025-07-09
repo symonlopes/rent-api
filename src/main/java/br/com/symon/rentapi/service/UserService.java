@@ -1,6 +1,5 @@
 package br.com.symon.rentapi.service;
 
-import br.com.symon.rentapi.model.Role;
 import br.com.symon.rentapi.model.User;
 import br.com.symon.rentapi.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -27,7 +26,6 @@ public class UserService  implements UserDetailsService {
     public void registerNewUser(User user, String password) {
         var encodedPass = passwordEncoder.encode(password);
         user.setPasswordHash(encodedPass);
-        user.getRoles().add(Role.builder().description("CUSTOMER").build());
         userRepository.save(user);
     }
 

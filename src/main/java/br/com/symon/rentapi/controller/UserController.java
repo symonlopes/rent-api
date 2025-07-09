@@ -1,5 +1,6 @@
 package br.com.symon.rentapi.controller;
 
+import br.com.symon.rentapi.model.Role;
 import br.com.symon.rentapi.model.User;
 import br.com.symon.rentapi.model.UserRegistrationRequest;
 import br.com.symon.rentapi.service.UserService;
@@ -27,7 +28,10 @@ public class UserController {
                 .name(request.getName())
                 .build();
 
+        user.getRoles().add(Role.builder().description("CUSTOMER").build());
+
         userService.registerNewUser(user, request.getPassword());
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

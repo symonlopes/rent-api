@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,8 +25,8 @@ public class UserRegistrationTests {
 		return UserRegistrationRequest.builder()
 				.name("Joe Doe")
 				.email("joedoe@email.com")
-				.password("valid@password99")
-				.passwordConfirmation("valid@password99")
+				.password("vAlid@password99")
+				.passwordConfirmation("vAlid@password99")
 				.build();
 	}
 
@@ -40,6 +41,79 @@ public class UserRegistrationTests {
 				.andExpect(status().isCreated())
 				.andReturn();
 
+	}
+
+
+	@Test
+	public void shouldNotCreateUserWithDifferentPasswords() throws Exception {
+
+		var entity = createValidUserRegistrationRequest();
+		entity.setPasswordConfirmation("different");
+
+		mockMvc.perform(post("/api/users/register")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(utils.getObjectMapper().writeValueAsString(entity)))
+				.andExpect(status().isBadRequest())
+				.andReturn();
+
+
+	}
+
+	@Test
+	public void shouldNotCreateUserWithTooShortPassword() throws Exception {
+
+		var entity = createValidUserRegistrationRequest();
+
+		entity.setPassword("@Ma1");
+		entity.setPasswordConfirmation("@Ma1");
+
+		MvcResult result = mockMvc.perform(post("/api/users/register")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(utils.getObjectMapper().writeValueAsString(entity)))
+				.andExpect(status().isBadRequest())
+				.andReturn();
+
+		var errorResponse = utils.parseResponse(result, ErrorResponse.class);
+		log.info("ErrorResponse: {}", errorResponse);
+
+	}
+
+	@Test
+	public void shouldNotCreateUserWithPasswordThtContainsSpaces() throws Exception {
+
+		var entity = createValidUserRegistrationRequest();
+
+		entity.setPassword("vAlid@ password99");
+		entity.setPasswordConfirmation("vAlid@ password99");
+
+		MvcResult result = mockMvc.perform(post("/api/users/register")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(utils.getObjectMapper().writeValueAsString(entity)))
+				.andExpect(status().isBadRequest())
+				.andReturn();
+
+		var errorResponse = utils.parseResponse(result, ErrorResponse.class);
+		log.info("ErrorResponse: {}", errorResponse);
+
+	}
+
+
+	@Test
+	public void shouldNotCreateUserWithTooBigPassword() throws Exception {
+
+		var entity = createValidUserRegistrationRequest();
+
+		entity.setPassword("vAlid@password99vAlid@password99vAlid@password99vAlid@password99vAlid@password99");
+		entity.setPasswordConfirmation("vAlid@password99vAlid@password99vAlid@password99vAlid@password99vAlid@password99");
+
+		MvcResult result = mockMvc.perform(post("/api/users/register")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(utils.getObjectMapper().writeValueAsString(entity)))
+				.andExpect(status().isBadRequest())
+				.andReturn();
+
+		var errorResponse = utils.parseResponse(result, ErrorResponse.class);
+		log.info("ErrorResponse: {}", errorResponse);
 
 	}
 
