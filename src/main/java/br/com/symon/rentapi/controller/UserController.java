@@ -29,7 +29,6 @@ public class UserController {
                 .build();
 
         user.getRoles().add(Role.builder().description("CUSTOMER").build());
-
         userService.registerNewUser(user, request.getPassword());
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
