@@ -5,10 +5,7 @@ import br.com.symon.rentapi.validation.PasswordsEqual;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @Data
@@ -25,8 +22,10 @@ public class UserRegistrationRequest {
     @Size(min = 5, max = 100, message = "Name must have at least 5 and at most 100 characters.")
     private String name;
 
+    @ToString.Exclude
     @Password
     private String password;
 
+    @ToString.Exclude
     private String passwordConfirmation;
 }

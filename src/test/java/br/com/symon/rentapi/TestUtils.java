@@ -30,17 +30,29 @@ public class TestUtils {
     @PostConstruct
     public void postConstruct() {
 
-        var user = User.builder().email("email@email.com").name("Test User").build();
+        var adminUser = User.builder().email("admin@email.com").name("Admin User").build();
 
-        user.getRoles().add(Role.builder().description("CUSTOMER").build());
-        user.getRoles().add(Role.builder().description("ADMIN").build());
+        adminUser.getRoles().add(Role.builder().description("CUSTOMER").build());
+        adminUser.getRoles().add(Role.builder().description("ADMIN").build());
 
-        userService.registerNewUser(user, "tempTestUser@");
+        userService.registerNewUser(adminUser, "tempTestUser@");
+
+        var customerUser = User.builder().email("customer@email.com").name("Customer User").build();
+
+        customerUser.getRoles().add(Role.builder().description("CUSTOMER").build());
+        customerUser.getRoles().add(Role.builder().description("ADMIN").build());
+
+        userService.registerNewUser(customerUser, "tempTestUser@");
+
 
     }
 
-    public String createJwtToken() {
-        return tokenService.generateToken("email@email.com","tempTestUser@");
+    public String createAdminJwtToken() {
+        return tokenService.generateToken("admin@email.com","tempTestUser@");
+    }
+
+    public String createCustomerJwtToken() {
+        return tokenService.generateToken("customer@email.com","tempTestUser@");
     }
 
 }

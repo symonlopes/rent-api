@@ -12,6 +12,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,32 @@ public class TokenService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+//    @Autowired
+//    private JwtEncoder jwtEncoder;
+
+//
+//    public String generateToken(Authentication authentication) {
+//
+//        Instant now = Instant.now();
+////        String scope = authentication.getAuthorities().stream()
+////                .map(GrantedAuthority::getAuthority)
+////                .collect(Collectors.joining(" "));
+//
+//        var scopes = authentication.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.toList());
+//
+//        JwtClaimsSet claims = JwtClaimsSet.builder()
+//                .issuer("self")
+//                .claim("scope", scopes)
+//                .issuedAt(now)
+//                .expiresAt(now.plus(3, ChronoUnit.HOURS))
+//                .subject(authentication.getName())
+//                .build();
+//
+//        return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+//    }
+
     public String generateToken(String email, String password) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -34,8 +62,6 @@ public class TokenService {
         );
 
         String username = authentication.getName();
-        Date now = new Date();
-        Date expiryDate =  new Date(now.getTime() + jwtExpiration);
 
         var key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
@@ -46,8 +72,8 @@ public class TokenService {
         return Jwts.builder()
                 .claim("scope", scopes)
                 .subject(username)
-                .issuedAt(now)
-                .expiration(expiryDate)
+                .issuedAt(Date.from(Instant.now()))
+                .expiration(Date.from(Instant.now().plus(3, ChronoUnit.HOURS)))
                 .signWith(key, Jwts.SIG.HS256)
                 .compact();
     }

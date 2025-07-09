@@ -2,6 +2,11 @@
 
 A reference project that presents key concepts that you will find in almost all projects that you implement.
 
+Items and tags
+Tags are a way of categorizing items. You can create tags and associate them with items. 
+Tags are better than categories because you can have multiple tags per item, and you can search items by tags.
+
+
 # Concepts to learn
 
 ## CRUD operations
@@ -61,14 +66,10 @@ The project is built using Gradle,
 ### How to remove sensible information from log like this:
  2025-07-03T19:01:02.490-03:00  INFO 45289 ---  b.c.s.rentapi.controller.UserController  : Registering a new user [UserRegistrationRequest(email=jhon@email.com, name=jhon doe, password=senha@valida112, passwordConfirmation=senha@valida112)]
 
-# Changelog
-* You must have a ADMIN token to execute unit tests.
+# Backlog
+~~* Remove sensitive fields from logs~~
+~~* You must have a ADMIN token to execute unit tests.~~
 ~~* Use spring-security-oauth2-authorization-server to generate JWT tokens~~
-* Validate if passwords are equals on account creation.
-* Security configuration
-* * Update unit tests
-* * /h2-console endpoint security must be permited only on non-prd scenarios
-* * h2 database file configuration must be present only for debug
-* * Hot to control ratelimit to /auth endpoint
+~~* Validate if passwords are equals on account creation.~~
 * See, specifically, where and when Springboot use virtual threads.
 * Test performance difference between using Virtual Threads and regular Threads.
