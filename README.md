@@ -64,7 +64,6 @@ The project is built using Gradle,
 # Changelog
 * You must have a ADMIN token to execute unit tests.
 ~~* Use spring-security-oauth2-authorization-server to generate JWT tokens~~
-* Move to constants solution:  user.getRoles().add(Role.builder().description("CUSTOMER").build());
 * Validate if passwords are equals on account creation.
 * Security configuration
 * * Update unit tests

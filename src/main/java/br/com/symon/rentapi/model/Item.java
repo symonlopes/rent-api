@@ -31,4 +31,6 @@ public class Item {
     @Builder.Default
     @MappedCollection(idColumn = "ITEM_ID")
     private Set<Image> images =  new HashSet<>(); //Initialize collections, so you do not have to check "null".
+
+
 }

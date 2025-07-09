@@ -1,5 +1,7 @@
 package br.com.symon.rentapi.model;
 
+import br.com.symon.rentapi.validation.Password;
+import br.com.symon.rentapi.validation.PasswordsEqual;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -12,20 +14,19 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@PasswordsEqual
 public class UserRegistrationRequest {
 
-    @Email @NotBlank
+    @Email(message = "Invalid email.")
+    @NotBlank(message = "Email is required.")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Name is required.")
     @Size(min = 5, max = 100, message = "Name must have at least 5 and at most 100 characters.")
     private String name;
 
-    @NotBlank
-    @Size(min = 8, max = 30, message = "Password must have at least 8 and at most 30 characters.")
+    @Password
     private String password;
 
-    @NotBlank
-    @Size(min = 8, max = 30, message = "Password confirmation must have at least 8 and at most 30 characters.")
     private String passwordConfirmation;
 }
