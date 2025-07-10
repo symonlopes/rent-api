@@ -1,5 +1,5 @@
 CREATE TABLE "user_role" (
-    "USER_ID" UUID DEFAULT RANDOM_UUID(),
-    "description" VARCHAR(60) NOT NULL,
-    CONSTRAINT fk_user_id FOREIGN KEY (USER_ID) REFERENCES "user"("id") ON DELETE CASCADE
+    "user_id" UUID NOT NULL,
+    "description" VARCHAR(30) NOT NULL,
+    CONSTRAINT fk_user_id FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE
 );

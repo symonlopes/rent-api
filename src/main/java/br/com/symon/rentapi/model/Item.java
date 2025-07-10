@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -32,5 +33,6 @@ public class Item {
     @MappedCollection(idColumn = "ITEM_ID")
     private Set<Image> images =  new HashSet<>(); //Initialize collections, so you do not have to check "null".
 
-
+    @Column("CATEGORY_ID")
+    private Category category;
 }

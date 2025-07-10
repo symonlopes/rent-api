@@ -21,6 +21,7 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Item> create(@RequestBody @Valid Item item){
         log.debug("Creating a new item [{}] ", item);
         var savedItem = itemService.create(item);
@@ -37,6 +38,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Item> delete(@PathVariable UUID id){
         log.debug("Deleting item with id [{}]", id);
         itemService.deleteById(id);
@@ -44,6 +46,7 @@ public class ItemController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Item> update(@RequestBody @Valid Item item) {
         var updatedItem = itemService.update(item);
         return new ResponseEntity<>(updatedItem, HttpStatus.OK);

@@ -20,29 +20,21 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Log4j2
-public class ApplicationTests {
+public class ItemTests {
 
 	@Autowired
 	private MockMvc mockMvc;
 	@Autowired
 	private TestUtils utils;
 
-	private Item createValidItem() {
-		var validItem = Item.builder()
-				.name("Item Name")
-				.details("Item Details")
-				.build();
+	@Autowired
+	private ItemTestUtils itemTestUtils;
 
-		validItem.getImages().add(Image.builder().url("https://dummyimage.com/600x400/c6c6c6/000000.jpg")
-				.build());
-
-		return validItem;
-	}
 
 	@Test
 	public void shouldCreateItemSuccessfully() throws Exception {
 
-		Item itemToCreate = createValidItem();
+		Item itemToCreate = itemTestUtils.createValidItem();
 
 		MvcResult result = mockMvc.perform(post("/api/items")
 						.header("Authorization", "Bearer " + utils.createAdminJwtToken())
@@ -62,7 +54,7 @@ public class ApplicationTests {
 	@Test
 	public void shouldNotCreateItemWithoutAtLeastOneImage() throws Exception {
 
-		Item itemToCreate = createValidItem();
+		Item itemToCreate =  itemTestUtils.createValidItem();
 
 		itemToCreate.setImages(null);
 
@@ -83,7 +75,7 @@ public class ApplicationTests {
 	@Test
 	public void shouldCreateItemWithoutDetails() throws Exception {
 
-		Item itemToCreate = createValidItem();
+		Item itemToCreate = itemTestUtils.createValidItem();
 
 		itemToCreate.setDetails("");
 
@@ -98,7 +90,7 @@ public class ApplicationTests {
 	@Test
 	public void shouldNotCreateItemWithTooShortName() throws Exception {
 
-		Item itemToCreate = createValidItem();
+		Item itemToCreate = itemTestUtils.createValidItem();
 
 		itemToCreate.setName("A");
 
@@ -111,17 +103,12 @@ public class ApplicationTests {
 
 		var errorResponse = utils.parseResponse(result, ErrorResponse.class);
 		log.info("shouldNotCreateItemWithoutTooShortName errorResponse: {}", errorResponse);
-
-//		assertTrue(utils.hasErrorOnField("name", errorResponse),
-//				"Expected at least one error for field 'name'");
-
-
 	}
 
 	@Test
 	public void shouldNotCreateItemWithoutName() throws Exception {
 
-		Item itemToCreate = createValidItem();
+		Item itemToCreate = itemTestUtils.createValidItem();
 
 		itemToCreate.setName("");
 
@@ -139,7 +126,7 @@ public class ApplicationTests {
 	@Test
 	public void shouldGetItemSuccessfully() throws Exception {
 
-		Item itemToCreate = createValidItem();
+		Item itemToCreate = itemTestUtils.createValidItem();
 
 		MvcResult result = mockMvc.perform(post("/api/items")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -172,7 +159,8 @@ public class ApplicationTests {
 	@Test
 	public void shouldReturn404WithInvalidId() throws Exception {
 
-		mockMvc.perform(get("/api/items/" + UUID.randomUUID()).header("Authorization", "Bearer " + utils.createAdminJwtToken()))
+		mockMvc.perform(get("/api/items/" + UUID.randomUUID())
+						.header("Authorization", "Bearer " + utils.createAdminJwtToken()))
 				.andExpect(status().isNotFound())
 				.andReturn();
 
@@ -182,7 +170,7 @@ public class ApplicationTests {
 	public void shouldDeleteItemSuccessfully() throws Exception {
 		log.info("Starting test: shouldDeleteItemSuccessfully");
 
-		Item itemToCreate = createValidItem();
+		Item itemToCreate = itemTestUtils.createValidItem();
 
 		MvcResult createResult = mockMvc.perform(post("/api/items")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -216,7 +204,7 @@ public class ApplicationTests {
 	public void shouldUpdateItemSuccessfully() throws Exception {
 		log.info("Starting test: shouldUpdateItemSuccessfully");
 
-		Item initialItem = createValidItem();
+		Item initialItem = itemTestUtils.createValidItem();
 
 		MvcResult createResult = mockMvc.perform(post("/api/items")
 						.contentType(MediaType.APPLICATION_JSON)
