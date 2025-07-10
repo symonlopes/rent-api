@@ -1,5 +1,7 @@
 package br.com.symon.rentapi;
 
+import br.com.symon.rentapi.api.CategoryApi;
+import br.com.symon.rentapi.api.ItemApi;
 import br.com.symon.rentapi.model.Item;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -23,17 +25,17 @@ public class CategoryTests {
     @Autowired
     private TestUtils utils;
     @Autowired
-    private CategoryTestUtils categoryTestUtils;
+    private CategoryApi categoryApi;
     @Autowired
-    private ItemTestUtils itemTestUtils;
+    private ItemApi itemApi;
 
     @Test
     public void shouldCreateItemWithACategory() throws Exception {
 
-        var item = itemTestUtils.createValidItem();
-        var category = categoryTestUtils.createNewCategory();
+        var item = itemApi.mockItem();
+        var category = categoryApi.createNewCategory();
 
-        item.setCategory(category);
+        item.setCategoryId(category.getId());
 
         MvcResult result = mockMvc.perform(post("/api/items")
                         .header("Authorization", "Bearer " + utils.createAdminJwtToken())

@@ -1,5 +1,7 @@
-package br.com.symon.rentapi;
+package br.com.symon.rentapi.api;
 
+import br.com.symon.rentapi.JwtTestUtils;
+import br.com.symon.rentapi.TestUtils;
 import br.com.symon.rentapi.model.Category;
 import br.com.symon.rentapi.service.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Getter
 @Component
-public class CategoryTestUtils {
+public class CategoryApi {
     @Autowired
     private MockMvc mockMvc;
     @Autowired

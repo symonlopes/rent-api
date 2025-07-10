@@ -21,6 +21,7 @@ import java.util.UUID;
 public class Category {
 
     @Id
+    @Column("id")
     private UUID id;
 
     @NotNull(message = "Name cannot be null.")
@@ -28,4 +29,6 @@ public class Category {
     @Size(min = 3, max = 30, message = "Name must have at least 3 and at most 30 characters.")
     @Column("name")
     private String name;
+
+
 }

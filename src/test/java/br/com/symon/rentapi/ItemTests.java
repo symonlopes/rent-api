@@ -1,5 +1,9 @@
 package br.com.symon.rentapi;
 
+import br.com.symon.rentapi.api.CategoryApi;
+import br.com.symon.rentapi.api.ItemApi;
+import br.com.symon.rentapi.api.TagApi;
+import br.com.symon.rentapi.apimodel.ItemDto;
 import br.com.symon.rentapi.model.*;
 
 import lombok.extern.log4j.Log4j2;
@@ -26,35 +30,47 @@ public class ItemTests {
 	private MockMvc mockMvc;
 	@Autowired
 	private TestUtils utils;
-
 	@Autowired
-	private ItemTestUtils itemTestUtils;
+	private ItemApi itemApi;
+	@Autowired
+	private CategoryApi categoryApi;
+	@Autowired
+	private TagApi tagApi;
 
 
 	@Test
 	public void shouldCreateItemSuccessfully() throws Exception {
 
-		Item itemToCreate = itemTestUtils.createValidItem();
+		var category = categoryApi.createNewCategory();
+
+		var tag_1 = tagApi.createNewTag();
+		var tag_2 = tagApi.createNewTag();
+
+		var item = itemApi.mockItem();
+
+		item.setCategoryId(category.getId());
+		item.getTags().add(TagRef.builder().tagId(tag_1.getId()).build());
+		item.getTags().add(TagRef.builder().tagId(tag_2.getId()).build());
 
 		MvcResult result = mockMvc.perform(post("/api/items")
 						.header("Authorization", "Bearer " + utils.createAdminJwtToken())
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(utils.getObjectMapper().writeValueAsString(itemToCreate)))
+						.content(utils.getObjectMapper().writeValueAsString(item)))
 				.andExpect(status().isCreated())
 				.andReturn();
 
-		var returnedItem = utils.parseResponse(result, Item.class);
+		var returnedItem = utils.parseResponse(result, ItemDto.class);
 
 		assertNotNull(returnedItem.getId(), "Id must not be null");
-		assertEquals(itemToCreate.getName(), returnedItem.getName(), "Names must match");
-		assertEquals(itemToCreate.getDetails(), returnedItem.getDetails(), "Details must match");
+		assertEquals(item.getName(), returnedItem.getName(), "Names must match");
+		assertEquals(item.getDetails(), returnedItem.getDetails(), "Details must match");
 
 	}
 
 	@Test
 	public void shouldNotCreateItemWithoutAtLeastOneImage() throws Exception {
 
-		Item itemToCreate =  itemTestUtils.createValidItem();
+		Item itemToCreate =  itemApi.mockItem();
 
 		itemToCreate.setImages(null);
 
@@ -75,7 +91,7 @@ public class ItemTests {
 	@Test
 	public void shouldCreateItemWithoutDetails() throws Exception {
 
-		Item itemToCreate = itemTestUtils.createValidItem();
+		Item itemToCreate = itemApi.mockItem();
 
 		itemToCreate.setDetails("");
 
@@ -90,7 +106,7 @@ public class ItemTests {
 	@Test
 	public void shouldNotCreateItemWithTooShortName() throws Exception {
 
-		Item itemToCreate = itemTestUtils.createValidItem();
+		Item itemToCreate = itemApi.mockItem();
 
 		itemToCreate.setName("A");
 
@@ -108,7 +124,7 @@ public class ItemTests {
 	@Test
 	public void shouldNotCreateItemWithoutName() throws Exception {
 
-		Item itemToCreate = itemTestUtils.createValidItem();
+		Item itemToCreate = itemApi.mockItem();
 
 		itemToCreate.setName("");
 
@@ -126,7 +142,7 @@ public class ItemTests {
 	@Test
 	public void shouldGetItemSuccessfully() throws Exception {
 
-		Item itemToCreate = itemTestUtils.createValidItem();
+		Item itemToCreate = itemApi.mockItem();
 
 		MvcResult result = mockMvc.perform(post("/api/items")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -170,7 +186,7 @@ public class ItemTests {
 	public void shouldDeleteItemSuccessfully() throws Exception {
 		log.info("Starting test: shouldDeleteItemSuccessfully");
 
-		Item itemToCreate = itemTestUtils.createValidItem();
+		Item itemToCreate = itemApi.mockItem();
 
 		MvcResult createResult = mockMvc.perform(post("/api/items")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -204,7 +220,7 @@ public class ItemTests {
 	public void shouldUpdateItemSuccessfully() throws Exception {
 		log.info("Starting test: shouldUpdateItemSuccessfully");
 
-		Item initialItem = itemTestUtils.createValidItem();
+		Item initialItem = itemApi.mockItem();
 
 		MvcResult createResult = mockMvc.perform(post("/api/items")
 						.contentType(MediaType.APPLICATION_JSON)
