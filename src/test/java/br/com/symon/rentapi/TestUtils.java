@@ -27,11 +27,11 @@ public class TestUtils {
     }
 
     public String createAdminJwtToken() {
-        return tokenService.generateToken("admin@email.com","tempTestUser@");
+        return tokenService.generateToken(Constants.ADMIN_EMAIL, Constants.ADMIN_PASSWORD);
     }
 
     public String createCustomerJwtToken() {
-        return tokenService.generateToken("customer@email.com","tempTestUser@");
+        return tokenService.generateToken(Constants.CUSTOMER_EMAIL,Constants.CUSTOMER_PASSWORD);
     }
 
 }

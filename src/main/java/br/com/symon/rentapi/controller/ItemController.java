@@ -1,6 +1,7 @@
 package br.com.symon.rentapi.controller;
 
-import br.com.symon.rentapi.apimodel.ItemDto;
+import br.com.symon.rentapi.dto.requests.ItemSaveRequestDTO;
+import br.com.symon.rentapi.dto.responses.ItemSaveResponseDTO;
 import br.com.symon.rentapi.model.Item;
 import br.com.symon.rentapi.service.ItemService;
 import jakarta.validation.Valid;
@@ -23,15 +24,15 @@ public class ItemController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ResponseEntity<ItemDto> create(@RequestBody @Valid Item item){
+    public ResponseEntity<ItemSaveResponseDTO> save(@RequestBody @Valid Item item){
         log.debug("Creating a new item [{}] ", item);
-        var savedItem = itemService.create(item);
+        var savedItem = itemService.save(item);
         return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_CUSTOMER')")
-    public ResponseEntity<ItemDto> getById(@PathVariable UUID id) {
+    public ResponseEntity<ItemSaveResponseDTO> getById(@PathVariable UUID id) {
         log.debug("Fetching item with id [{}]", id);
         return itemService.findById(id)
                 .map(item -> new ResponseEntity<>(item, HttpStatus.OK))

@@ -1,6 +1,7 @@
 package br.com.symon.rentapi.api;
 
 import br.com.symon.rentapi.TestUtils;
+import br.com.symon.rentapi.dto.responses.ItemSaveResponseDTO;
 import br.com.symon.rentapi.model.Image;
 import br.com.symon.rentapi.model.Item;
 import br.com.symon.rentapi.service.TokenService;
@@ -46,7 +47,7 @@ public class ItemApi {
         return validItem;
     }
 
-    public Item createNewItem() throws Exception {
+    public ItemSaveResponseDTO createNewItem() throws Exception {
 
         var category = categoryApi.createNewCategory();
 
@@ -60,7 +61,7 @@ public class ItemApi {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        return utils.parseResponse(result, Item.class);
+        return utils.parseResponse(result, ItemSaveResponseDTO.class);
     }
 
 

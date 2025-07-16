@@ -3,7 +3,7 @@ package br.com.symon.rentapi;
 import br.com.symon.rentapi.api.CategoryApi;
 import br.com.symon.rentapi.api.ItemApi;
 import br.com.symon.rentapi.api.TagApi;
-import br.com.symon.rentapi.apimodel.ItemDto;
+import br.com.symon.rentapi.dto.responses.ItemSaveResponseDTO;
 import br.com.symon.rentapi.model.*;
 
 import lombok.extern.log4j.Log4j2;
@@ -59,11 +59,14 @@ public class ItemTests {
 				.andExpect(status().isCreated())
 				.andReturn();
 
-		var returnedItem = utils.parseResponse(result, ItemDto.class);
+		var returnedItem = utils.parseResponse(result, ItemSaveResponseDTO.class);
 
-		assertNotNull(returnedItem.getId(), "Id must not be null");
-		assertEquals(item.getName(), returnedItem.getName(), "Names must match");
+		assertNotNull(returnedItem.getId(), "Item IOD must not be null");
+		assertEquals(item.getName(), returnedItem.getName(), "Name must match");
 		assertEquals(item.getDetails(), returnedItem.getDetails(), "Details must match");
+		assertEquals(2, item.getTags().size(), "Item must have two tags");
+		assertEquals(category.getId(), item.getCategoryId(), "Category ID must match");
+
 
 	}
 

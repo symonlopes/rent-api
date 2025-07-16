@@ -67,9 +67,9 @@ The project is built using Gradle,
  2025-07-03T19:01:02.490-03:00  INFO 45289 ---  b.c.s.rentapi.controller.UserController  : Registering a new user [UserRegistrationRequest(email=jhon@email.com, name=jhon doe, password=senha@valida112, passwordConfirmation=senha@valida112)]
 
 # Backlog
-* Write a test to check if a category linting can be done without role.
+* Write a test to check if a category delete can be done without role.
 * Write a test to check if a new item cannot be created by a CUSTOMER role.
-* Creating category for items
+~~* Creating category for items~~
 ~~* Remove sensitive fields from logs~~
 ~~* You must have a ADMIN token to execute unit tests.~~
 ~~* Use spring-security-oauth2-authorization-server to generate JWT tokens~~

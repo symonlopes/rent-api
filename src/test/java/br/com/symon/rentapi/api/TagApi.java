@@ -18,15 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Getter
 @Component
 public class TagApi {
-
-    @Autowired
-    private ObjectMapper objectMapper;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private TokenService tokenService;
-    @Autowired
-    private CategoryApi categoryApi;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
