@@ -2,10 +2,6 @@ package br.com.symon.rentapi.api;
 
 import br.com.symon.rentapi.TestUtils;
 import br.com.symon.rentapi.model.Tag;
-import br.com.symon.rentapi.service.TokenService;
-import br.com.symon.rentapi.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -15,9 +11,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Getter
+
 @Component
 public class TagApi {
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired

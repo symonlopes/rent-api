@@ -4,6 +4,8 @@ import br.com.symon.rentapi.api.CategoryApi;
 import br.com.symon.rentapi.api.ItemApi;
 import br.com.symon.rentapi.api.TagApi;
 import br.com.symon.rentapi.dto.responses.ItemSaveResponseDTO;
+import br.com.symon.rentapi.dto.responses.TagDTO;
+import br.com.symon.rentapi.error.ErrorResponse;
 import br.com.symon.rentapi.model.*;
 
 import lombok.extern.log4j.Log4j2;
@@ -253,6 +255,32 @@ public class ItemTests {
 		assertEquals(createdItem.getId(), updatedItem.getId(), "ID should not change");
 		assertEquals(createdItem.getName(), updatedItem.getName());
 		assertEquals(createdItem.getDetails(), updatedItem.getDetails());
+	}
+
+
+	@Test
+	public void shouldCreateAItemWithMultipleTags() throws Exception {
+
+		var tag_1 = tagApi.createNewTag();
+		var tag_2 = tagApi.createNewTag();
+
+		var item = itemApi.createNewItem();
+
+		item.getTags().add(TagDTO.builder().id(tag_1.getId()).build());
+		item.getTags().add(TagDTO.builder().id(tag_2.getId()).build());
+
+		MvcResult result = mockMvc.perform(post("/api/items")
+						.header("Authorization", "Bearer " + utils.createAdminJwtToken())
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(utils.getObjectMapper().writeValueAsString(item)))
+				.andExpect(status().isCreated())
+				.andReturn();
+
+		var returnedEntity = utils.parseResponse(result, Item.class);
+
+		assertNotNull(returnedEntity.getId(), "Id must not be null");
+		assertEquals(2, returnedEntity.getTags().size(), "Item must have two tags");
+
 	}
 
 }

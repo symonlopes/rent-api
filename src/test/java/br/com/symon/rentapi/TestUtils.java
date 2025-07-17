@@ -1,14 +1,13 @@
 package br.com.symon.rentapi;
 
-import br.com.symon.rentapi.model.*;
 import br.com.symon.rentapi.service.TokenService;
 import br.com.symon.rentapi.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MvcResult;
+
 @Getter
 @Component
 public class TestUtils {

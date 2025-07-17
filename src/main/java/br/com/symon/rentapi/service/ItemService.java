@@ -1,6 +1,6 @@
 package br.com.symon.rentapi.service;
 
-import br.com.symon.rentapi.ResourceNotFoundException;
+import br.com.symon.rentapi.error.ResourceNotFoundException;
 import br.com.symon.rentapi.dto.responses.ImageDTO;
 import br.com.symon.rentapi.dto.responses.ItemSaveResponseDTO;
 import br.com.symon.rentapi.dto.responses.TagDTO;

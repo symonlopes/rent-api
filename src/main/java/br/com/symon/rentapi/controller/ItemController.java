@@ -1,6 +1,5 @@
 package br.com.symon.rentapi.controller;
 
-import br.com.symon.rentapi.dto.requests.ItemSaveRequestDTO;
 import br.com.symon.rentapi.dto.responses.ItemSaveResponseDTO;
 import br.com.symon.rentapi.model.Item;
 import br.com.symon.rentapi.service.ItemService;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/items")
+@RequestMapping("/api/item")
 @AllArgsConstructor
 @Log4j2
 public class ItemController {

@@ -1,10 +1,8 @@
 package br.com.symon.rentapi.service;
 
-import br.com.symon.rentapi.ResourceNotFoundException;
+import br.com.symon.rentapi.error.ResourceNotFoundException;
 import br.com.symon.rentapi.model.Category;
-import br.com.symon.rentapi.model.Item;
 import br.com.symon.rentapi.repository.CategoryRepository;
-import br.com.symon.rentapi.repository.ItemRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package br.com.symon.rentapi.advice;
 
-import br.com.symon.rentapi.ApiError;
-import br.com.symon.rentapi.ErrorResponse;
+import br.com.symon.rentapi.error.ApiError;
+import br.com.symon.rentapi.error.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

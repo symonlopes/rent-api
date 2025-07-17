@@ -1,6 +1,6 @@
 package br.com.symon.rentapi.service;
 
-import br.com.symon.rentapi.ResourceNotFoundException;
+import br.com.symon.rentapi.error.ResourceNotFoundException;
 import br.com.symon.rentapi.model.Tag;
 import br.com.symon.rentapi.repository.TagRepository;
 import lombok.AllArgsConstructor;

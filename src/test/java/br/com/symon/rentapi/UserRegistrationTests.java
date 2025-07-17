@@ -1,5 +1,6 @@
 package br.com.symon.rentapi;
 
+import br.com.symon.rentapi.error.ErrorResponse;
 import br.com.symon.rentapi.model.UserRegistrationRequest;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;

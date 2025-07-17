@@ -1,4 +1,4 @@
-package br.com.symon.rentapi;
+package br.com.symon.rentapi.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

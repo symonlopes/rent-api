@@ -1,4 +1,4 @@
-package br.com.symon.rentapi;
+package br.com.symon.rentapi.error;
 
 import lombok.Builder;
 
